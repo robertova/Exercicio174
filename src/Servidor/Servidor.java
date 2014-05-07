@@ -26,12 +26,12 @@ public class Servidor {
     public static void main(String[] args) throws Exception {
         
         ServerSocket socket = new ServerSocket(6786);
-
+        System.out.println("Escoitando en porto 6786");
         while (true) {
 
             Socket conexion = socket.accept();
             BufferedReader entrada = new BufferedReader(new InputStreamReader(conexion.getInputStream()));
-            DataOutputStream salida = new DataOutputStream(conexion.getOutputStream());
+            DataOutputStream salida = new DataOutputStream(conexion.getOutputStream());            
             String comando = entrada.readLine();
             System.out.println(comando);
             String[] cachos = comando.split("::");
@@ -48,6 +48,10 @@ public class Servidor {
                     salida.write(fileInBytes, 0, numOfBytes);
                     salida.close();
                     System.out.println("Arquivo enviado");
+                    Socket conexion2 = socket.accept();
+                    DataOutputStream salida2 = new DataOutputStream(conexion2.getOutputStream());
+                    salida2.writeBytes("Servidor: \"Arquivo enviado\"");
+                    salida2.close();
                 } else {
                     System.out.println("Non se autopou o arquivo");
                 }
